@@ -1,12 +1,16 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './api/app/app.controller';
-import { AppService } from './api/app/app.service';
-import { TodoController } from './api/todo/todo.controller';
-import { TodoService } from './api/todo/todo.service';
+import { MongooseModule } from '@nestjs/mongoose';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { TodoModule } from './api/todo/todo.module';
+import { config } from './config/config';
 
 @Module({
-  imports: [],
-  controllers: [AppController, TodoController],
-  providers: [AppService, TodoService],
+  imports: [
+    TodoModule,
+    MongooseModule.forRoot(config.mongo.url)
+  ],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
