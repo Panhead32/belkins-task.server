@@ -1,4 +1,4 @@
-export class UpdateTodoDto {
-  readonly title: string;
-  readonly done: boolean;
+export interface UpdateTodoDto {
+  title: string;
+  done: boolean;
 }
