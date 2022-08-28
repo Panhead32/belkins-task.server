@@ -1,4 +1,4 @@
-const MONGO_URL = 'mongodb://localhost:27017/balkins_task';
+const MONGO_URL = 'mongodb://localhost:27017/belkins_task';
 
 export const config = {
   mongo: {

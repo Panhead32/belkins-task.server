@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
+import { Todo } from './schemas/todo.schema';
 import { TodoService } from './todo.service';
 
 @Controller('todo')
@@ -18,23 +19,23 @@ export class TodoController {
   constructor(private readonly todoService: TodoService) {}
 
   @Get()
-  getAll() {
+  getAll(): Promise<Todo[]> {
     return this.todoService.getAll();
   }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() createTodoDto: CreateTodoDto) {
+  create(@Body() createTodoDto: CreateTodoDto): Promise<Todo> {
     return this.todoService.create(createTodoDto);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: string) {
-    return `delete id: ${id}`;
+  delete(@Param('id') id: string): Promise<Todo> {
+    return this.todoService.remove(id)
   }
 
   @Put(':id')
-  edit(@Body() updateTodoDto: UpdateTodoDto, @Param('id') id: string) {
-    return `create todo - Title: ${updateTodoDto.title}, done: ${updateTodoDto.done}`;
+  edit(@Body() updateTodoDto: UpdateTodoDto, @Param('id') id: string): Promise<Todo> {
+    return this.todoService.update(id, updateTodoDto)
   }
 }

@@ -1,18 +1,29 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 import { CreateTodoDto } from './dto/create-todo.dto';
+import { UpdateTodoDto } from './dto/update-todo.dto';
+import { Todo, TodoDocument } from './schemas/todo.schema';
 
 @Injectable()
 export class TodoService {
-  private todos = [];
-
-  getAll() {
-    return this.todos;
+  constructor(@InjectModel(Todo.name) private todoModel: Model<TodoDocument>) {
   }
 
-  create(todoDto: CreateTodoDto) {
-    this.todos.push({
-      ...todoDto,
-      _id: Date.now().toString(),
-    });
+  async getAll(): Promise<Todo[]> {
+    return this.todoModel.find().exec();
+  }
+
+  async create(todoDto: CreateTodoDto): Promise<Todo> {
+    const newTodo = new this.todoModel(todoDto)
+    return newTodo.save()
+  }
+
+  async remove(id: string): Promise<Todo> {
+    return this.todoModel.findByIdAndRemove(id)
+  }
+
+  async update(id: string, todoDto: UpdateTodoDto): Promise<Todo> {
+    return this.todoModel.findByIdAndUpdate(id, todoDto, { new: true })
   }
 }
