@@ -9,8 +9,8 @@ import {
   HttpStatus,
   HttpCode,
 } from '@nestjs/common';
-import { CreateTodoDto } from './dto/create-todo.dto';
-import { UpdateTodoDto } from './dto/update-todo.dto';
+import { CreateTodoDto } from '../../models/create-todo.dto';
+import { UpdateTodoDto } from '../../models/update-todo.dto';
 import { Todo } from './schemas/todo.schema';
 import { TodoService } from './todo.service';
 
